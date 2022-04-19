@@ -90,6 +90,12 @@ typedef NS_ENUM(NSUInteger, CMMapApp) {
    forDirectionsFrom:(CMMapPoint *)start
                   to:(CMMapPoint *)end;
 
+/**
+ 
+ */
++ (BOOL)launchMapApp:(CMMapApp)mapApp
+            forPoint:(CMMapPoint *)start;
+
 @end
 
 

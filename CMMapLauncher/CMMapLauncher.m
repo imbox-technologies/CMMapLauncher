@@ -187,6 +187,45 @@
     return NO;
 }
 
++ (BOOL)launchMapApp:(CMMapApp)mapApp
+            forPoint:(CMMapPoint *)point {
+    if (![CMMapLauncher isMapAppInstalled:mapApp]) {
+        return NO;
+    }
+    
+    if (mapApp == CMMapAppAppleMaps) {
+        // Check for iOS 6
+        Class mapItemClass = [MKMapItem class];
+        if (mapItemClass && [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)]) {
+            NSDictionary *launchOptions = @{MKLaunchOptionsMapCenterKey: [NSValue valueWithMKCoordinate:point.coordinate]};
+            return [MKMapItem openMapsWithItems:@[point.MKMapItem] launchOptions:launchOptions];
+        } else {  // iOS 5
+            NSString *url = [NSString stringWithFormat:@"http://maps.google.com/maps?q=@%@",
+                             [CMMapLauncher googleMapsStringForMapPoint:point]
+                             ];
+            return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        }
+    } else if (mapApp == CMMapAppGoogleMaps) {
+        NSString *url = [NSString stringWithFormat:@"comgooglemaps://?q=@%@",
+                         [CMMapLauncher googleMapsStringForMapPoint:point]
+                         ];
+        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+    } else if (mapApp == CMMapAppCitymapper) {
+        return NO;
+    } else if (mapApp == CMMapAppTheTransitApp) {
+        return NO;
+    } else if (mapApp == CMMapAppNavigon) {
+        return NO;
+    } else if (mapApp == CMMapAppWaze) {
+        NSString *url = [NSString stringWithFormat:@"waze://?ll=%f,%f&navigate=no", point.coordinate.latitude, point.coordinate.longitude];
+        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+    } else if (mapApp == CMMapAppYandex) {
+        return NO;
+    }
+    
+    return NO;
+}
+
 @end
 
 
