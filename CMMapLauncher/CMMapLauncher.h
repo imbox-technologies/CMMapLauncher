@@ -171,5 +171,10 @@ typedef NS_ENUM(NSUInteger, CMMapApp) {
 + (CMMapPoint *)mapPointWithAddress:(NSString *)address
                          coordinate:(CLLocationCoordinate2D)coordinate;
 
+/**
+ 
+ */
++ (CMMapPoint *)mapPointWithAddress:(NSString *)address;
+
 @end
 

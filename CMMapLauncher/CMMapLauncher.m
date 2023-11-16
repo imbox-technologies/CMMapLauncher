@@ -78,7 +78,9 @@
         return @"";
     }
     
-    if (mapPoint.name) {
+    if (mapPoint.address) {
+        return [NSString stringWithFormat:@"%@", [CMMapLauncher urlEncode:mapPoint.address]];
+    } else if (mapPoint.name) {
         return [NSString stringWithFormat:@"%f,%f+(%@)", mapPoint.coordinate.latitude, mapPoint.coordinate.longitude, [CMMapLauncher urlEncode:mapPoint.name]];
     }
     
@@ -269,6 +271,13 @@
     CMMapPoint *mapPoint = [[CMMapPoint alloc] init];
     mapPoint.address = address;
     mapPoint.coordinate = coordinate;
+    return mapPoint;
+}
+
++ (CMMapPoint *)mapPointWithAddress:(NSString *)address {
+    CMMapPoint *mapPoint = [[CMMapPoint alloc] init];
+    mapPoint.address = address;
+    mapPoint.coordinate = CLLocationCoordinate2DMake(0, 0);
     return mapPoint;
 }
 
