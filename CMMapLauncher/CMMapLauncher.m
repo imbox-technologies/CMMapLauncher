@@ -122,14 +122,24 @@
                              [CMMapLauncher googleMapsStringForMapPoint:start],
                              [CMMapLauncher googleMapsStringForMapPoint:end]
                              ];
-            return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+            if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+                return YES;
+            } else {
+                return NO;
+            }
         }
     } else if (mapApp == CMMapAppGoogleMaps) {
         NSString *url = [NSString stringWithFormat:@"comgooglemaps://?saddr=%@&daddr=%@",
                          [CMMapLauncher googleMapsStringForMapPoint:start],
                          [CMMapLauncher googleMapsStringForMapPoint:end]
                          ];
-        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+            return YES;
+        } else {
+            return NO;
+        }
     } else if (mapApp == CMMapAppCitymapper) {
         NSMutableArray *params = [NSMutableArray arrayWithCapacity:10];
         if (start && !start.isCurrentLocation) {
@@ -151,7 +161,12 @@
             }
         }
         NSString *url = [NSString stringWithFormat:@"citymapper://directions?%@", [params componentsJoinedByString:@"&"]];
-        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+            return YES;
+        } else {
+            return NO;
+        }
     } else if (mapApp == CMMapAppTheTransitApp) {
         // http://thetransitapp.com/developers
         
@@ -163,7 +178,12 @@
             [params addObject:[NSString stringWithFormat:@"to=%f,%f", end.coordinate.latitude, end.coordinate.longitude]];
         }
         NSString *url = [NSString stringWithFormat:@"transit://directions?%@", [params componentsJoinedByString:@"&"]];
-        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+            return YES;
+        } else {
+            return NO;
+        }
     } else if (mapApp == CMMapAppNavigon) {
         // http://www.navigon.com/portal/common/faq/files/NAVIGON_AppInteract.pdf
         
@@ -172,10 +192,20 @@
             name = end.name;
         }
         NSString *url = [NSString stringWithFormat:@"navigon://coordinate/%@/%f/%f", [CMMapLauncher urlEncode:name], end.coordinate.longitude, end.coordinate.latitude];
-        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+            return YES;
+        } else {
+            return NO;
+        }
     } else if (mapApp == CMMapAppWaze) {
         NSString *url = [NSString stringWithFormat:@"waze://?ll=%f,%f&navigate=yes", end.coordinate.latitude, end.coordinate.longitude];
-        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+            return YES;
+        } else {
+            return NO;
+        }
     } else if (mapApp == CMMapAppYandex) {
         NSString *url = nil;
         if (start.isCurrentLocation) {
@@ -183,7 +213,12 @@
         } else {
             url = [NSString stringWithFormat:@"yandexnavi://build_route_on_map?lat_to=%f&lon_to=%f&lat_from=%f&lon_from=%f", end.coordinate.latitude, end.coordinate.longitude, start.coordinate.latitude, start.coordinate.longitude];
         }
-        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+            return YES;
+        } else {
+            return NO;
+        }
     }
     
     return NO;
@@ -205,13 +240,23 @@
             NSString *url = [NSString stringWithFormat:@"http://maps.google.com/maps?q=@%@",
                              [CMMapLauncher googleMapsStringForMapPoint:point]
                              ];
-            return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+            if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+                return YES;
+            } else {
+                return NO;
+            }
         }
     } else if (mapApp == CMMapAppGoogleMaps) {
         NSString *url = [NSString stringWithFormat:@"comgooglemaps://?q=@%@",
                          [CMMapLauncher googleMapsStringForMapPoint:point]
                          ];
-        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+            return YES;
+        } else {
+            return NO;
+        }
     } else if (mapApp == CMMapAppCitymapper) {
         return NO;
     } else if (mapApp == CMMapAppTheTransitApp) {
@@ -220,7 +265,12 @@
         return NO;
     } else if (mapApp == CMMapAppWaze) {
         NSString *url = [NSString stringWithFormat:@"waze://?ll=%f,%f&navigate=no", point.coordinate.latitude, point.coordinate.longitude];
-        return [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        if ([UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:url]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
+            return YES;
+        } else {
+            return NO;
+        }
     } else if (mapApp == CMMapAppYandex) {
         return NO;
     }
